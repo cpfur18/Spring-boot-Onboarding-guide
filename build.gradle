@@ -1,28 +1,69 @@
 plugins {
 	id 'java'
+	// 스프링 부트 의존성 관리 및 패키징, 자동설정, 실행 관련 태스크 제공
 	id 'org.springframework.boot' version '3.5.14'
+	//스프링 의존성 관리 기능 제공
 	id 'io.spring.dependency-management' version '1.1.7'
+	// 다양한 언어를 위한 코드 포매터와 관련 태스크 제공
+	id 'com.diffplug.spotless' version '6.25.0'
 }
-
+// 프로젝트의 r르부 ID와 버전 설정
 group = 'com.asdf'
 version = '0.0.1-SNAPSHOT'
 
+// 자바 컴파일러와 관련된 설정 추가
 java {
+	// 자바 버전
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(17)
 	}
 }
-
+// 의존성 해결을 위한 maven 센트럴 저장소 추가
 repositories {
 	mavenCentral()
 }
 
+// 프로젝트의 구현, 테스트, 런타임 의존성 설정
+// 의존성 추가 시 Gradle이 자동으로 다운로드
 dependencies {
+	// spring boot web stater 의존성 추가
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	//JUnit 5 의존성 추가
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	//Junit 5 런타임 추가
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	
+	// Swagger UI 의존성 추가
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
+	// Lobok 라이브러리를 컴파일 시에만 사용
+	compileOnly 'org.projectlombok:lombok'
+	// Lombok 어노테이션 프로세서 추가
+	annotationProcessor 'org.projectlombok:lombok'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+
+	// 테스트 실행 시 상세 결과 출력 활성화
+	testLogging {
+		// 테스트 이벤트 중 어떤 것을 로그로 출력할지 결정
+		events "passed", "skipped", "failed"
+		// 테스트 케이스 별 겨러과를 항상 출력하도록 설정
+		outputs.upToDateWhen { false }
+		// java Agent 경고 메시지 억제, 자바 21부터
+		jvmArgs '-XX:+EnableDynamicAgentLoading'
+	}
+}
+
+spotless {
+	// Java파일에 대한 포맷팅 설정
+	java {
+		// Google Java Format 적용
+		googleJavaFormat('1.22.0').aosp().reflowLongStrings()
+	}
+}
+
+// build 할 때 spotlessApply를 실행하여 자동으로 코드의 양식 맞춤
+tasks.named('build') {
+	dependsOn 'spotlessApply'
 }
