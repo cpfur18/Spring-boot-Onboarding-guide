@@ -1,6 +1,6 @@
 package com.asdf.todo.controller;
 
-import com.asdf.todo.model.Todo;
+import com.asdf.todo.entity.Todo;
 import com.asdf.todo.service.TodoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

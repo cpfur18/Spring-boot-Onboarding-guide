@@ -1,6 +1,6 @@
 package com.asdf.todo.service;
 
-import com.asdf.todo.model.Todo;
+import com.asdf.todo.entity.Todo;
 import com.asdf.todo.repository.TodoMemoryRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
