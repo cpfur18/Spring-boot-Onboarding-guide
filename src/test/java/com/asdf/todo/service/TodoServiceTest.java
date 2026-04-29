@@ -3,7 +3,7 @@ package com.asdf.todo.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.asdf.todo.entity.Todo;
-import com.asdf.todo.repository.TodoMemoryRepository;
+import com.asdf.todo.repository.TodoRepository;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,7 @@ class TodoServiceTest {
 
     @BeforeEach
     void setUp() {
-        todoService = new TodoService(new TodoMemoryRepository());
+        todoService = new TodoService(new TodoRepository());
         todoService.save(new Todo(null, "Test Todo 1", "Description 1", false));
         todoService.save(new Todo(null, "Test Todo 2", "Description 2", true));
     }

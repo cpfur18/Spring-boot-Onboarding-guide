@@ -16,7 +16,7 @@ public class EntityDtoMapper {
         );
     }
 
-    public static TodoResponseDto todoResponseDto(Todo entity) {
+    public static TodoResponseDto toDto(Todo entity) {
         return new TodoResponseDto(
                 entity.getId(), entity.getTitle(), entity.getDescription(), entity.isCompleted());
     }
