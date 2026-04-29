@@ -28,8 +28,8 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(TodoController.class)
 class TodoControllerTest {
 
-    @Autowired private MockMvc mockMvc;
-    @MockitoBean private TodoService todoService;
+    @Autowired private MockMvc mockMvc; //
+    @MockitoBean private TodoService todoService; // 테스트용 가짜 객체, 컨트롤러에선 굳이 DB 테스트 필요성 없음
 
     @Test
     void testGetTodoById() throws Exception {
@@ -76,7 +76,7 @@ class TodoControllerTest {
                                         + "\"Description\"}"))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(1L))
-                .andExpect(jsonPath("$.title").value("New Todo"));
+                .andExpect(jsonPath("$.title").value("Test Todo"));
     }
 
     @Test

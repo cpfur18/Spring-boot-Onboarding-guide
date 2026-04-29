@@ -43,6 +43,7 @@ dependencies {
 	testImplementation 'org.testcontainers:junit-jupiter:1.20.1'
 	testImplementation 'org.testcontainers:testcontainers:1.20.1'
 	testImplementation 'org.testcontainers:postgresql:1.20.1'
+	runtimeOnly "org.postgresql:postgresql" // Spring이 DB에 접속하기 위한 JDBC 드라이버
 	//Junit 5 런타임 추가
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
