@@ -1,12 +1,12 @@
-package com.asdf.todo;
+package com.asdf.minilog;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TodoApplication {
+public class MinilogApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(TodoApplication.class, args);
+        SpringApplication.run(MinilogApplication.class, args);
     }
 }
