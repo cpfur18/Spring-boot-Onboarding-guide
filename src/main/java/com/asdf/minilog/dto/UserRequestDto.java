@@ -1,12 +1,11 @@
 package com.asdf.minilog.dto;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NonNull;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
-@Data
-@Builder
+@Getter
+@NoArgsConstructor
 public class UserRequestDto {
-    @NonNull private String username;
-    @NonNull private String password;
+    @NotNull private String username;
+    @NotNull private String password;
 }

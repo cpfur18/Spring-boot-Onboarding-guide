@@ -1,12 +1,12 @@
 package com.asdf.minilog.dto;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NonNull;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
-@Data
+//@Data
+@Getter
 @Builder
 public class ArticleRequestDto {
-    @NonNull private String content;
-    @NonNull private Long authorId;
+    @NotNull private String content;
+    @NotNull private Long authorId;
 }
