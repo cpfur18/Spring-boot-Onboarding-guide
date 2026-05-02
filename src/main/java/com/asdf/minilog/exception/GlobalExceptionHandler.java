@@ -1,6 +1,5 @@
 package com.asdf.minilog.exception;
 
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +20,9 @@ public class GlobalExceptionHandler {
                             responseCode = "500",
                             description = "Internal server error")
     })
-    @ExceptionHandler(UserNotFonundException.class)
+    @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<String> handleUserNotFoundException
-            (UserNotFonundException ex) {
+            (UserNotFoundException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
 //        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 //                .body(new ErrorResponse("BAD_REQUEST", ex.getMessage())); 구조화된 방식
@@ -41,9 +40,9 @@ public class GlobalExceptionHandler {
                             responseCode = "500",
                             description = "Internal server error")
             })
-    @ExceptionHandler(UserNotFonundException.class)
+    @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<String> handleArticleNotFoundException
-            (UserNotFonundException ex) {
+            (UserNotFoundException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
