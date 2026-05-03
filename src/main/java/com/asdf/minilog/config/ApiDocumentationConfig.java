@@ -1,4 +1,4 @@
-package com.asdf.todo.config;
+package com.asdf.minilog.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -13,8 +13,8 @@ public class ApiDocumentationConfig {
         return new OpenAPI()
                 .info(
                         new Info()
-                                .title("TODO List Api")
-                                .version("2.0")
-                                .description("Spring Boot3를 이용한 TODO LIST API 문서"));
+                                .title("MiniLog Api")
+                                .version("1.0")
+                                .description("API documentation for the Minilog project"));
     }
 }
