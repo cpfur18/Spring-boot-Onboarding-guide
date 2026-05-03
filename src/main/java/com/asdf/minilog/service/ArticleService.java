@@ -102,4 +102,19 @@ public class ArticleService {
         return feedList.stream()
                 .map(EntityDtoMapper::toDto).toList();
     }
+
+    @Transactional(readOnly = true)
+    public List<ArticleResponseDto> getArticleListByUserId(Long userId) {
+        User user =
+                userRepository
+                        .findById(userId)
+                        .orElseThrow(
+                                () ->
+                                        new UserNotFoundException(
+                                                String.format("해당 아이디(%d)를 가진 사용자를 찾을 수 없습니다.", userId)));
+
+        var articleList = articleRepository.findAllByAuthorId(userId);
+        return articleList.stream()
+                .map(EntityDtoMapper::toDto).toList();
+    }
 }

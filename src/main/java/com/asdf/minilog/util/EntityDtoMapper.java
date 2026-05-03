@@ -1,7 +1,7 @@
 package com.asdf.minilog.util;
 
 import com.asdf.minilog.dto.ArticleResponseDto;
-import com.asdf.minilog.dto.FollowerResponseDto;
+import com.asdf.minilog.dto.FollowResponseDto;
 import com.asdf.minilog.dto.UserResponseDto;
 import com.asdf.minilog.entity.Article;
 import com.asdf.minilog.entity.Follow;
@@ -19,8 +19,8 @@ public class EntityDtoMapper {
     }
 
 
-    public static FollowerResponseDto toDto(Follow follow) {
-        return FollowerResponseDto.builder()
+    public static FollowResponseDto toDto(Follow follow) {
+        return FollowResponseDto.builder()
                 .followerId(follow.getFollower().getId())
                 .followeeId(follow.getFollowee().getId())
                 .build();

@@ -1,14 +1,12 @@
 package com.asdf.minilog.dto;
 
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Getter
 @NoArgsConstructor
-public class FollowerRequestDto {
+public class FollowRequestDto {
     @NotNull private Long followerId;
     @NotNull private Long followeeId;
 }
