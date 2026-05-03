@@ -1,24 +1,23 @@
 package com.asdf.minilog.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
-
 @Entity
-@Table(name = "follows",
+@Table(
+        name = "follows",
         indexes = { // 인덱스 설정, 복합 컬럼일때만 indexes나 uniqueConstraints 처럼 = {}로 사용
             @Index(name = "idx_follower_id", columnList = "follower_id"),
             @Index(name = "idx_followee_id", columnList = "followee_id")
         },
-        uniqueConstraints = {@UniqueConstraint(columnNames = {"follower_id", "followee_id"})}) // 유니크
-@Data
+        uniqueConstraints = {
+            @UniqueConstraint(columnNames = {"follower_id", "followee_id"})
+        }) // 유니크
+@Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

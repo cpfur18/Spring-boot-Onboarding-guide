@@ -13,8 +13,8 @@ public class ApiDocumentationConfig {
         return new OpenAPI()
                 .info(
                         new Info()
-                                .title("MiniLog List Api")
-                                .version("2.0")
-                                .description("Spring Boot3를 이용한 MiniLog LIST API 문서"));
+                                .title("MiniLog Api")
+                                .version("1.0")
+                                .description("API documentation for the Minilog project"));
     }
 }

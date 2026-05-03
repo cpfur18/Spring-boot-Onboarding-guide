@@ -49,7 +49,7 @@ class ArtcleControllerTest {
 
     // API 요청 테스트 도구
     @Autowired MockMvc mockMvc;
-    @Autowired ArticleService articleService;
+    @MockitoBean ArticleService articleService;
 
     AutoCloseable closeable;
 
@@ -79,8 +79,7 @@ class ArtcleControllerTest {
                         .build();
         when(articleService.createArticle(any(String.class), anyLong())).thenReturn(responseDto);
 
-        mockMvc
-                .perform(
+        mockMvc.perform(
                         post("/api/v1/article")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(requestDto)))
@@ -105,8 +104,7 @@ class ArtcleControllerTest {
                         .build();
         when(articleService.getArticleById(anyLong())).thenReturn(responseDto);
 
-        mockMvc
-                .perform(get("/api/v1/article/1"))
+        mockMvc.perform(get("/api/v1/article/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.articleId").value(1L))
                 .andExpect(jsonPath("$.content").value("Test Content"))
@@ -129,8 +127,7 @@ class ArtcleControllerTest {
                         .build();
         when(articleService.updateArticle(anyLong(), any(String.class))).thenReturn(responseDto);
 
-        mockMvc
-                .perform(
+        mockMvc.perform(
                         put("/api/v1/article/1")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(requestDto)))
@@ -160,8 +157,7 @@ class ArtcleControllerTest {
         List<ArticleResponseDto> responseList = Collections.singletonList(responseDto);
         when(articleService.getArticleListByUserId(anyLong())).thenReturn(responseList);
 
-        mockMvc
-                .perform(get("/api/v1/article").param("authorId", "1"))
+        mockMvc.perform(get("/api/v1/article").param("authorId", "1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].articleId").value(1L))
                 .andExpect(jsonPath("$[0].content").value("Test Content"))
@@ -175,8 +171,7 @@ class ArtcleControllerTest {
         when(articleService.getArticleById(anyLong()))
                 .thenThrow(new ArticleNotFoundException("Article Not Found"));
 
-        mockMvc
-                .perform(get("/api/v1/article/999"))
+        mockMvc.perform(get("/api/v1/article/999"))
                 .andExpect(status().isNotFound())
                 .andExpect(content().string("Article Not Found"));
     }

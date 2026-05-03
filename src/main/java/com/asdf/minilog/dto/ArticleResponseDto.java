@@ -1,11 +1,9 @@
 package com.asdf.minilog.dto;
 
+import java.time.LocalDateTime;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NonNull;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Builder

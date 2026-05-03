@@ -1,20 +1,17 @@
 package com.asdf.minilog.service;
 
-import com.asdf.minilog.dto.ArticleResponseDto;
 import com.asdf.minilog.dto.UserRequestDto;
 import com.asdf.minilog.dto.UserResponseDto;
-import com.asdf.minilog.entity.Article;
 import com.asdf.minilog.entity.User;
 import com.asdf.minilog.exception.UserNotFoundException;
 import com.asdf.minilog.repository.UserRepository;
 import com.asdf.minilog.util.EntityDtoMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 // 클래스 내 모든 메서드에 트랜잭션 적용 해 데이터 변경 작업이 안전하게 이루어지도록 보장
@@ -32,7 +29,7 @@ public class UserService {
     // 종료 시 변경 내용을 커밋하지 않도록 처해 원치 않는 데이터 변경 방지
     @Transactional(readOnly = true)
     public List<UserResponseDto> getUsers() {
-        return  userRepository.findAll().stream()
+        return userRepository.findAll().stream()
                 .map(EntityDtoMapper::toDto)
                 .collect(Collectors.toList());
     }
@@ -44,8 +41,7 @@ public class UserService {
     }
 
     public UserResponseDto createUser(UserRequestDto userRequestDto) {
-        if (userRepository.findByUsername(userRequestDto.getUsername())
-                .isPresent()) {
+        if (userRepository.findByUsername(userRequestDto.getUsername()).isPresent()) {
             // IllegalArgumentException : 인수가 유효하지 않음
             throw new IllegalArgumentException("이미 존재하는 사용자 이름 입니다.");
         }
@@ -56,7 +52,7 @@ public class UserService {
                                 .username(userRequestDto.getUsername())
                                 .password(userRequestDto.getPassword())
                                 .build());
-                return EntityDtoMapper.toDto(saveUser);
+        return EntityDtoMapper.toDto(saveUser);
     }
 
     // RequestDTO에 ID를 안 넣고 따로 받는 이유 = 역할분리
@@ -68,16 +64,17 @@ public class UserService {
                         .orElseThrow(
                                 () ->
                                         new UserNotFoundException(
-                                                String.format("해당 아이디(%d)를 가진 " +
-                                                        "사용자를 찾을 수 없습니다.", userId)));
+                                                String.format(
+                                                        "해당 아이디(%d)를 가진 " + "사용자를 찾을 수 없습니다.",
+                                                        userId)));
         user.setUsername(userRequestDto.getUsername());
         user.setPassword(userRequestDto.getPassword());
 
         // var는 로컬 선언 시 사용 가능한 타입 식별자, 컴파일러가 결정(변수 선언 시 타입 생략 가능)
         // JPA의 Dirty Checking에 의해 setUsername, setPassword이 되어 save를 사용하지 않아도 update됨
-//         var updatedUser = userRepository.save(user);
-//         return EntityDtoMapper.toDto(updatedUser);
-         return EntityDtoMapper.toDto(user);
+        //         var updatedUser = userRepository.save(user);
+        //         return EntityDtoMapper.toDto(updatedUser);
+        return EntityDtoMapper.toDto(user);
     }
 
     public void deleteUser(Long userId) {
@@ -87,9 +84,9 @@ public class UserService {
                         .orElseThrow(
                                 () ->
                                         new UserNotFoundException(
-                                                String.format("해당 아이디(%d)를 가진 사용자를 찾을 수" +
-                                                        "없습니다.", userId)));
-        userRepository.deleteById(userId);
+                                                String.format(
+                                                        "해당 아이디(%d)를 가진 사용자를 찾을 수" + "없습니다.",
+                                                        userId)));
+        userRepository.delete(user);
     }
-
 }

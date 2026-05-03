@@ -3,7 +3,7 @@ package com.asdf.minilog.dto;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-//@Data
+// @Data
 @Getter
 @Builder
 public class ArticleRequestDto {
