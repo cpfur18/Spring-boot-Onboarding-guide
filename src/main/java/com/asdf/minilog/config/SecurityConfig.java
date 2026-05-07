@@ -28,7 +28,9 @@ public class SecurityConfig {
     private final JwtRequestFilter jwtRequestFilter;
 
     @Autowired
-    public SecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, JwtRequestFilter jwtRequestFilter) {
+    public SecurityConfig(
+            JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
+            JwtRequestFilter jwtRequestFilter) {
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         this.jwtRequestFilter = jwtRequestFilter;
     }
@@ -51,9 +53,10 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         (requests) ->
-                                requests
-                                        .requestMatchers("/api/v2/auth/login", "/swagger-ui/**",
-                                                "v3/api-docs/**")
+                                requests.requestMatchers(
+                                                "/api/v2/auth/login",
+                                                "/swagger-ui/**",
+                                                "/v3/api-docs/**")
                                         .permitAll()
                                         // 사용자 생성, 조회는 인증 없이 가능
                                         .requestMatchers(HttpMethod.POST, "/api/v2/user")
@@ -67,14 +70,15 @@ public class SecurityConfig {
                                         .authenticated())
                 .exceptionHandling(
                         exceptionHandling ->
-                                exceptionHandling.authenticationEntryPoint(jwtAuthenticationEntryPoint))
-                .sessionManagement( // JWT는 세션을 사용하지 않기에 SessionCreationPolicy.STATELESS로 세션 생성이나 유지 X
-                        sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                                exceptionHandling.authenticationEntryPoint(
+                                        jwtAuthenticationEntryPoint))
+                .sessionManagement( // JWT는 세션을 사용하지 않기에 SessionCreationPolicy.STATELESS로 세션 생성이나 유지
+                        // X
+                        sessionManagement ->
+                                sessionManagement.sessionCreationPolicy(
+                                        SessionCreationPolicy.STATELESS));
         // 기존 인증 필터보다 JWT 필터를 먼저 수행하도록 하도록 설정
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
-
-
-
 }

@@ -4,6 +4,7 @@ import com.asdf.minilog.dto.ArticleResponseDto;
 import com.asdf.minilog.entity.Article;
 import com.asdf.minilog.entity.User;
 import com.asdf.minilog.exception.ArticleNotFoundException;
+import com.asdf.minilog.exception.NotAuthorizedException;
 import com.asdf.minilog.exception.UserNotFoundException;
 import com.asdf.minilog.repository.ArticleRepository;
 import com.asdf.minilog.repository.UserRepository;
@@ -44,7 +45,7 @@ public class ArticleService {
         return EntityDtoMapper.toDto(saveArticle);
     }
 
-    public void deleteArticle(Long articleId) {
+    public void deleteArticle(Long authorId, Long articleId) {
         Article article =
                 articleRepository
                         .findById(articleId)
@@ -55,10 +56,16 @@ public class ArticleService {
                                                         "해당 아이디(%d)를 가진 게시글을 찾을 수" + "없습니다.",
                                                         articleId)));
 
+        boolean isOwner = article.getAuthor().getId().equals(authorId);
+
+        if (!isOwner) {
+            throw new NotAuthorizedException("게시글 작성자만 삭제 할 수 있습니다.");
+        }
+
         articleRepository.delete(article);
     }
 
-    public ArticleResponseDto updateArticle(Long articleId, String content) {
+    public ArticleResponseDto updateArticle(Long authorId, Long articleId, String content) {
         Article article =
                 articleRepository
                         .findById(articleId)
@@ -70,6 +77,11 @@ public class ArticleService {
                                                         articleId)));
 
         article.setContent(content);
+        boolean isOwner = article.getAuthor().getId().equals(authorId);
+
+        if (!isOwner) {
+            throw new NotAuthorizedException("게시글 작성자만 수정 할 수 있습니다.");
+        }
 
         return EntityDtoMapper.toDto(article);
     }

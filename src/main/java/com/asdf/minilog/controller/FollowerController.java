@@ -2,6 +2,7 @@ package com.asdf.minilog.controller;
 
 import com.asdf.minilog.dto.FollowRequestDto;
 import com.asdf.minilog.dto.FollowResponseDto;
+import com.asdf.minilog.security.MinilogUserDetails;
 import com.asdf.minilog.service.FollowService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -9,10 +10,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/follow")
+@RequestMapping("/api/v2/follow")
 public class FollowerController {
     private final FollowService followService;
 
@@ -27,8 +29,10 @@ public class FollowerController {
         @ApiResponse(responseCode = "200", description = "성공"),
         @ApiResponse(responseCode = "404", description = "사용자 없음")
     })
-    public ResponseEntity<FollowResponseDto> follow(@RequestBody FollowRequestDto request) {
-        Long followerId = request.getFollowerId();
+    public ResponseEntity<FollowResponseDto> follow(
+            @AuthenticationPrincipal MinilogUserDetails userDetails,
+            @RequestBody FollowRequestDto request) {
+        Long followerId = userDetails.getId();
         Long followeeId = request.getFolloweeId();
 
         FollowResponseDto follow = followService.follow(followerId, followeeId);
@@ -42,8 +46,9 @@ public class FollowerController {
         @ApiResponse(responseCode = "404", description = "사용자 없음")
     })
     public ResponseEntity<Void> unFollow(
-            @PathVariable Long followerId, @PathVariable Long followeeId) {
-        followService.unFollow(followerId, followeeId);
+            @AuthenticationPrincipal MinilogUserDetails userDetails,
+            @PathVariable Long followeeId) {
+        followService.unFollow(userDetails.getId(), followeeId);
         return ResponseEntity.noContent().build();
     }
 

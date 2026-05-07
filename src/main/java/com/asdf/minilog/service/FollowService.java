@@ -4,7 +4,7 @@ import com.asdf.minilog.dto.FollowResponseDto;
 import com.asdf.minilog.entity.Follow;
 import com.asdf.minilog.entity.User;
 import com.asdf.minilog.exception.UserNotFoundException;
-import com.asdf.minilog.repository.FollowerRepository;
+import com.asdf.minilog.repository.FollowRepository;
 import com.asdf.minilog.repository.UserRepository;
 import com.asdf.minilog.util.EntityDtoMapper;
 import java.util.List;
@@ -16,12 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class FollowService {
 
-    private final FollowerRepository followerRepository;
+    private final FollowRepository followRepository;
     private final UserRepository userRepository;
 
     @Autowired
-    public FollowService(FollowerRepository followerRepository, UserRepository userRepository) {
-        this.followerRepository = followerRepository;
+    public FollowService(FollowRepository followRepository, UserRepository userRepository) {
+        this.followRepository = followRepository;
         this.userRepository = userRepository;
     }
 
@@ -49,13 +49,13 @@ public class FollowService {
                                                         "팔로잉 아이디(%d)를 가진 사용자를 찾을 수 " + "없습니다.",
                                                         follweeId)));
 
-        Follow follow = followerRepository.save(EntityDtoMapper.toEntity(follwerId, follweeId));
+        Follow follow = followRepository.save(EntityDtoMapper.toEntity(follwerId, follweeId));
         return EntityDtoMapper.toDto(follow);
     }
 
     public void unFollow(Long followerId, Long followeeId) {
         Follow follow =
-                followerRepository
+                followRepository
                         .findByFollowerIdAndFolloweeId(followerId, followeeId)
                         .orElseThrow(
                                 () ->
@@ -64,7 +64,7 @@ public class FollowService {
                                                         "팔로어(%d)와 팔로잉(%d)을 연결하는 Follow를 찾을 수 "
                                                                 + "없습니다.",
                                                         followerId, followeeId)));
-        followerRepository.delete((follow));
+        followRepository.delete((follow));
     }
 
     @Transactional(readOnly = true)
@@ -74,7 +74,7 @@ public class FollowService {
                     String.format("해당 아이디(%d)를 가진 " + "사용자를 찾을 수 없습니다.", userId));
         }
 
-        return followerRepository.findByFollowerId(userId).stream()
+        return followRepository.findByFollowerId(userId).stream()
                 .map(EntityDtoMapper::toDto)
                 .toList();
     }

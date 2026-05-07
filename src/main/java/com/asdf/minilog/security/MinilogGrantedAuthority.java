@@ -3,7 +3,7 @@ package com.asdf.minilog.security;
 import com.asdf.minilog.entity.Role;
 import org.springframework.security.core.GrantedAuthority;
 
-public class MinilogGrantedAuthority  implements GrantedAuthority {
+public class MinilogGrantedAuthority implements GrantedAuthority {
     private final Role role;
 
     public MinilogGrantedAuthority(Role role) {
@@ -35,5 +35,4 @@ public class MinilogGrantedAuthority  implements GrantedAuthority {
     public String toString() {
         return this.role.name();
     }
-
 }

@@ -3,11 +3,6 @@ package com.asdf.minilog.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
-
-import javax.crypto.spec.SecretKeySpec;
 import java.io.Serial;
 import java.io.Serializable;
 import java.security.Key;
@@ -16,12 +11,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import javax.crypto.spec.SecretKeySpec;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 @Component
 public class JwtUtil implements Serializable {
-    @Serial
-    private static final long serialVersionUID = -2803737781367947994L;
-    // 유효 시간 설정 (5시간 5시간 * 60분 * 60초)
+    @Serial private static final long serialVersionUID = -2803737781367947994L;
+    // 유효 시간 설정 (5시간 : 5시간 * 60분 * 60초)
     public static final long JWT_VALIDITY = 5 * 60 * 60;
 
     @Value("${JWT_SECRET_KEY}")
@@ -59,10 +57,12 @@ public class JwtUtil implements Serializable {
     public Claims getAllClaimsFromToken(String token) {
         Key signingKey =
                 new SecretKeySpec(
-                        Base64.getDecoder().decode(secret),
-                        SignatureAlgorithm.HS256.getJcaName());
-        return Jwts.parserBuilder().setSigningKey(signingKey).build().
-                parseClaimsJws(token).getBody();
+                        Base64.getDecoder().decode(secret), SignatureAlgorithm.HS256.getJcaName());
+        return Jwts.parserBuilder()
+                .setSigningKey(signingKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     private Boolean isTokenExpired(String token) {
